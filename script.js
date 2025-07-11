@@ -1,6 +1,3 @@
-
-
-
 // Gameboard:
 //  Store 3x3 grid
 const createBoard = (function () {
@@ -37,21 +34,43 @@ function createPlayer(name, symbol) {
     // handle a turn
         // currentPlayer picks a spot
 function pickSpot() {
-    let input = prompt("Pick a spot; e.g. 'i,j'");
-    let i = input[0];
-    let j = input[2];
-    board[i][j] = currentPlayer.symbol;
+    // while loop until player picks a valid spot
+    let validMove = false;
+    while (!validMove) {
+        let input = prompt("Pick a spot; e.g. 'i,j'");
+
+        let i = parseInt(input[0]);
+        let j = parseInt(input[2]);
+    
+        // gameController checks if spot is available
+        if (board[i][j] !== null) {
+            alert("Spot already taken. Please choose another.");
+            continue;
+        }
+
+        // valid move
+        board[i][j] = currentPlayer.symbol;
+        validMove = true;
+    }
+}
+
+function checkWinner() {
+    if ((board[0][0] === board[0][1] && board[0][1] === board[0][2]) ||
+        (board[1][0] === board[1][1] && board[1][1] === board[1][2]) ||
+        (board[2][0] === board[2][1] && board[2][1] === board[2][2]) ||
+        (board[0][0] === board[1][1] && board[1][1] === board[2][2]) ||
+        (board[2][0] === board[1][1] && board[1][1] === board[0][2])) {
+            return true;
+        }
+        return false;
 }
 
 function playTurn(turn) {
     pickSpot();
+    currentPlayer = swapTurn(currentPlayer);
     turn++;
 }
-        // gameController checks if spot is available
-            // if not, prompt player to choose new spot
-            // if available, change cell value to player.symbol
             // check for winner or tie
-        // if game is not over, change value of currentPlayer
 
     /*TESTING:
     const game = GameController();
